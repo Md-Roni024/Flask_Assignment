@@ -5,9 +5,9 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 
 def register_routes(app):
 
-    @app.route('/')
-    def home():
-        return "Welcome to the API! Use /register to create an account, /signin to log in, /reset-password to reset your password, and /users to manage users."
+    # @app.route('/')
+    # def home():
+    #     return "Welcome to the API! Use /register to create an account, /signin to log in, /reset-password to reset your password, and /users to manage users."
 
     @app.route('/register', methods=['POST'])
     def register():
