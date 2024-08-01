@@ -45,18 +45,36 @@ def register_routes(app):
             return jsonify({"msg": "Login successful"}), 200
         return jsonify({"msg": "Username or Password does not match"}), 401
 
+    
     @app.route('/reset-password', methods=['PUT'])
+    @jwt_required()
     def reset_password():
         data = request.get_json()
         username = data.get('username')
         new_password = data.get('new_password')
+        current_password = data.get('current_password')
 
-        user = User.query.filter_by(username=username).first()
-        if user:
-            user.set_password(new_password)
+        current_user = User.query.filter_by(username=get_jwt_identity()).first()
+
+        if current_user:
+            # Admin can reset any user's password
+            if current_user.role == 'Admin' and username:
+                user = User.query.filter_by(username=username).first()
+                if user:
+                    user.set_password(new_password)
+                    db.session.commit()
+                    return jsonify({"msg": "Password reset successfully for user."}), 200
+                return jsonify({"msg": "User not found"}), 404
+            
+            # Regular user resetting their own password
+            if not current_password or not current_user.check_password(current_password):
+                return jsonify({"msg": "Current password is incorrect"}), 401
+
+            current_user.set_password(new_password)
             db.session.commit()
             return jsonify({"msg": "Password reset successfully!"}), 200
-        return jsonify({"msg": "User not found"}), 404
+
+        return jsonify({"msg": "Unauthorized access"}), 403
 
     @app.route('/users', methods=['GET'])
     @jwt_required()
