@@ -1,0 +1,10 @@
+#Registration Format
+{
+  "username": "demo",
+  "password": "demo",
+  "first_name": "Roni",
+  "last_name": "Hossain",
+  "email": "demo@example.com",
+  "role": "Admin",
+  "active": true
+}
