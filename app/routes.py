@@ -135,3 +135,12 @@ def register_routes(app):
         db.session.delete(user)
         db.session.commit()
         return jsonify({"msg": "User deleted successfully"}), 200
+    
+    @app.route('/test', methods=['GET'])
+    def test():
+        try:
+            # Perform a simple query to test the database connection
+            db.session.execute('SELECT 1')
+            return jsonify({"msg": "Database connection is successful!"}), 200
+        except Exception as e:
+            return jsonify({"msg": "Database connection failed!", "error": str(e)}), 500
