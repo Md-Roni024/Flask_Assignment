@@ -32,17 +32,17 @@ Before running the application, make sure you have installed python in your mach
     ```
 3. Create a .env file then add your variables credentials as like:
     ```
-    USER = "Postgress User Name"
-    HOST = "Host Name"
-    DATABASE = "Database Name"
-    PASSWORD = "Postgress Password"
+    DATABASE_USER=""
+    DATABASE_PASSWORD=""
+    DATABASE_HOST=""
+    DATABASE_NAME=""
 
     //Server Listening PORT
     PORT = ""
     ```
 4. Start the project
     ```
-    python app.py
+    python run.py
     ```
     After successfully run the project it will launch in port 5000. and Root URL will be : http://127.0.0.1:5000
 
@@ -50,42 +50,187 @@ Before running the application, make sure you have installed python in your mach
 ### REST API
 For managing user information I build 5 endpoints.They are responsible for register,signin,reset-password,update user and delete user. 
 
-- <h3>Create a new USER</h2>
-  Method: POST
+- <h3>Create a new USER</h3>
+  <h5>Content-Type: application/json</h5>
+  <h5>Method: POST</h5>
+  <h5>URL: http://127.0.0.1:5000/register</h5>
 
-  URL: http://127.0.0.1:5000/register
-
-  Input looks like:
+  Test Input:
   
   ```json
-  {
-    "username": "demo",
-    "password": "demo",
-    "first_name": "Roni",
-    "last_name": "Hossain",
-    "email": "demo@example.com",
-    "role": "Admin",
-    "active": true
-  }
+        {
+            "username": "test33",
+            "first_name": "Roni",
+            "last_name": "Hossain",
+            "email": "test33@example.com",
+            "password": "12345678",
+            "role": "User",
+            "active": true
+        }
 
   ```
-
-- <h3>USER siginin</h2>
-  Method: POST
-
-  header: Authorization Token
-
-  URL: http://127.0.0.1:5000/register/signin/
-
-  Signin input looks like:
-
+  Success Response:
   ```json
-   {
-    "username": "user_01",
-    "password": "user24"
-   }
+    {
+    "message": "User created",
+    "user": {
+        "active": true,
+        "created_date": "2024-08-05T07:00:49.586343",
+        "email": "test33@example.com",
+        "first_name": "Roni",
+        "id": 8,
+        "last_name": "Hossain",
+        "role": "USER",
+        "updated_date": "2024-08-05T07:00:49.586343",
+        "username": "test33"
+        }
+    }
+
   ```
 
+  <h5>Status Code</h5>
+
+    ```
+
+    Success: 200 User Created
+    Fail: 400 BAD REQUEST
+
+    ```
+
+- <h3>Get All User</h3>
+  <h5>Content-Type: application/json</h5>
+  <h5>Method: GET</h5>
+  <h5>URL: http://127.0.0.1:5000/users</h5>
+
+  Success Response:
+  ```json
+    {
+    "message": "All Users",
+    "user": [
+        {
+        "active": true,
+        "created_date": "Mon, 05 Aug 2024 05:47:16 GMT",
+        "email": "test@example.com",
+        "first_name": "Roni",
+        "id": 4,
+        "last_name": "Hossain",
+        "role": "ADMIN",
+        "updated_date": "Mon, 05 Aug 2024 05:47:16 GMT",
+        "username": "test1234"
+        },
+        {
+        "active": true,
+        "created_date": "Mon, 05 Aug 2024 05:58:34 GMT",
+        "email": "hello@example.com",
+        "first_name": "Roni",
+        "id": 5,
+        "last_name": "Hossain",
+        "role": "ADMIN",
+        "updated_date": "Mon, 05 Aug 2024 05:58:34 GMT",
+        "username": "hello1234"
+        }
+      ]
+    }
+
+  ```
+
+  <h5>Status Code</h5>
+
+    ```
+    
+    Success: 200 OK
+    Fail: 400 BAD REQUEST
+
+    ```
+
+
+- <h3>Get Single User By ID</h3>
+  <h5>Content-Type: application/json</h5>
+  <h5>Method: GET</h5>
+  <h5>URL: http://127.0.0.1:5000/users/9</h5>
+
+  Success Response:
+  ```json
+        {
+    "Message": "User by user id",
+    "user": {
+        "active": true,
+        "created_date": "2024-08-05T07:24:02.947393",
+        "email": "abdullah@example.com",
+        "first_name": "Abdullah",
+        "id": 9,
+        "last_name": "Mamun",
+        "role": "USER",
+        "updated_date": "2024-08-05T07:24:02.947393",
+        "username": "Abdullah"
+        }
+    }
+
+  ```
+
+  <h5>Status Code</h5>
+
+    ```
+    
+    Success: 200 OK
+    Fail: 404 NOT FOUND
+
+    ```
+
+- <h3>Delete User By ID</h3>
+  <h5>Content-Type: application/json</h5>
+  <h5>Method: DELETE</h5>
+  <h5>URL: http://127.0.0.1:5000/users/7</h5>
+
+  Success Response:
+  ```json
+    {
+        "Message": "User deleted successfully"
+    }
+
+  ```
+
+  <h5>Status Code</h5>
+
+    ```
+    
+    Success: 200 OK
+    Fail: 404 NOT FOUND
+
+    ```
+
+
+- <h3>User Login</h3>
+  <h5>Content-Type: application/json</h5>
+  <h5>Method: POST</h5>
+  <h5>URL: http://127.0.0.1:5000/login</h5>
+
+  Test Unput:
+  ```json        
+  {
+    "username": "Abdullah",
+    "password":"12345678"
+  }
+  ```
+
+
+  Success Response:
+  ```json
+    {
+    "Message": "Login Successful",
+    "Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyMjg0MzAzNCwianRpIjoiY2M4MWMwMzgtYjY5Zi00ZWVmLTk0MDMtNjRhM2Q5NmQ5ZTg5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6OSwibmJmIjoxNzIyODQzMDM0LCJjc3JmIjoiY2M3NjQ1MTctMWRmMy00ZTJhLTg2YjUtZjU5NWVhNjUyY2I5IiwiZXhwIjoxNzIyODQ2NjM0fQ.kyPvLUogU2znRNRPk91wkf3_wEeailXEF1OwETtHnN4"
+    }
+
+  ```
+
+  <h5>Status Code</h5>
+
+    ```
+    
+    Success: 200 OK
+    Fail: 401 UNAUTHORIZED
+
+    ```
 - <h3>Reset password</h2>
   Method: PUT
 
@@ -111,11 +256,12 @@ For managing user information I build 5 endpoints.They are responsible for regis
       id SERIAL PRIMARY KEY,
       username VARCHAR(255) UNIQUE NOT NULL,
       first_name VARCHAR(255) NOT NULL,
-      password_hash VARCHAR(255) NOT NULL,
+      last_name VARCHAR(255) NOT NULL,
+      password VARCHAR(255) NOT NULL,
       email VARCHAR(255) NOT NULL,
       role TEXT,
-      created_at Date,
-      updated_at Date,
+      created_date Date,
+      updated_date Date,
       active boolean
   );
 
